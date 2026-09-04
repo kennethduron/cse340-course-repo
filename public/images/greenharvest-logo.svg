@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 180" role="img" aria-labelledby="title desc">
+  <title id="title">GreenHarvest</title>
+  <desc id="desc">GreenHarvest sustainability logo</desc>
+  <rect width="400" height="180" rx="26" fill="#edf8f0"/>
+  <path d="M90 116C90 80 118 56 154 56C176 56 198 66 212 82C200 76 183 72 166 72C122 72 92 96 90 116Z" fill="#2a9d8f"/>
+  <path d="M132 120C132 92 154 70 178 70C196 70 212 82 220 98C208 90 194 86 180 86C156 86 136 100 132 120Z" fill="#184e77"/>
+  <path d="M202 87C238 78 272 90 298 118" stroke="#2a9d8f" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <text x="130" y="98" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700" fill="#184e77">GreenHarvest</text>
+  <text x="130" y="126" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#5d6b75">Growing healthy communities</text>
+</svg>
