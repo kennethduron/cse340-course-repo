@@ -1,6 +1,9 @@
+import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { testConnection } from './src/models/db.js';
+import { getAllOrganizations } from './src/models/organizations.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -18,8 +21,14 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
-  const title = 'Our Partner Organizations';
-  res.render('organizations', { title });
+  try {
+    const organizations = await getAllOrganizations();
+    const title = 'Our Partner Organizations';
+    res.render('organizations', { title, organizations });
+  } catch (error) {
+    console.error('Error loading organizations:', error.message);
+    res.status(500).send('Unable to load organizations.');
+  }
 });
 
 app.get('/projects', async (req, res) => {
@@ -32,6 +41,13 @@ app.get('/categories', async (req, res) => {
   res.render('categories', { title });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running in ${NODE_ENV} mode on http://localhost:${PORT}`);
+app.listen(PORT, async () => {
+  try {
+    await testConnection();
+
+    console.log(`Server is running at http://127.0.0.1:${PORT}`);
+    console.log(`Environment: ${NODE_ENV}`);
+  } catch (error) {
+    console.error('Error connecting to the database:', error.message);
+  }
 });
