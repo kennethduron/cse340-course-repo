@@ -1,16 +1,19 @@
 <%- include('partials/header') %>
 
-<section class="section-block">
-  <div class="container">
-    <h1><%= title %></h1>
+  <section class="section-block">
+    <div class="container">
+      <h1>
+        <%= title %>
+      </h1>
 
-    <ul class="category-list">
-      <li>Environmental</li>
-      <li>Educational</li>
-      <li>Community Service</li>
-      <li>Health and Wellness</li>
-    </ul>
-  </div>
-</section>
+      <ul class="category-list">
+        <% categories.forEach((category)=> { %>
+          <li>
+            <%= category.name %>
+          </li>
+          <% }); %>
+      </ul>
+    </div>
+  </section>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>
