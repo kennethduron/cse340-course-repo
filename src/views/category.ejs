@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+
+    <section class="section-block">
+        <div class="container detail-layout">
+            <article class="detail-card">
+                <h1>
+                    <%= category.name %>
+                </h1>
+
+                <% if (projects && projects.length) { %>
+                    <ul class="detail-list">
+                        <% projects.forEach((project)=> { %>
+                            <li><a href="/project/<%= project.project_id %>">
+                                    <%= project.title %>
+                                </a></li>
+                            <% }); %>
+                    </ul>
+                    <% } else { %>
+                        <p>No projects are currently listed for this category.</p>
+                        <% } %>
+            </article>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>

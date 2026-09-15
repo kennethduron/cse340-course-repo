@@ -3,9 +3,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import router from './src/routes.js';
+import { errorHandler, notFoundHandler } from './src/controllers/errors.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -17,48 +16,25 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', async (req, res) => {
-  const title = 'Home';
-  res.render('home', { title });
+app.use((req, res, next) => {
+  if (NODE_ENV === 'development') {
+    console.log(`${req.method} ${req.url}`);
+  }
+  next();
 });
 
-app.get('/organizations', async (req, res) => {
-  try {
-    const organizations = await getAllOrganizations();
-    const title = 'Our Partner Organizations';
-    res.render('organizations', { title, organizations });
-  } catch (error) {
-    console.error('Error loading organizations:', error.message);
-    res.status(500).send('Unable to load organizations.');
-  }
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = NODE_ENV;
+  next();
 });
 
-app.get('/projects', async (req, res) => {
-  try {
-    const projects = await getAllProjects();
-    const title = 'Service Projects';
-    res.render('projects', { title, projects });
-  } catch (error) {
-    console.error('Error loading projects:', error.message);
-    res.status(500).send('Unable to load projects.');
-  }
-});
-
-app.get('/categories', async (req, res) => {
-  try {
-    const categories = await getAllCategories();
-    const title = 'Service Project Categories';
-    res.render('categories', { title, categories });
-  } catch (error) {
-    console.error('Error loading categories:', error.message);
-    res.status(500).send('Unable to load categories.');
-  }
-});
+app.use(router);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 app.listen(PORT, async () => {
   try {
     await testConnection();
-
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
     console.log(`Environment: ${NODE_ENV}`);
   } catch (error) {
