@@ -1,8 +1,12 @@
-    </main>
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>© <%= new Date().getFullYear() %> CSE 340 Service Network</p>
-      </div>
-    </footer>
-  </body>
+</main>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© <%= new Date().getFullYear() %> CSE 340 Service Network</p>
+    <% if (NODE_ENV==='development' ) { %>
+      <p class="dev-mode-tag">(Development mode)</p>
+      <% } %>
+  </div>
+</footer>
+</body>
+
 </html>

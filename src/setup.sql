@@ -112,105 +112,105 @@ VALUES
     'Neighborhood Home Repair Day',
     'Repairing porches, steps, and weather damage for older neighbors.',
     'Maple Ridge Neighborhood',
-    '2026-01-17'
+    CURRENT_DATE + INTERVAL '1 day'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'BrightFuture Builders'),
     'Accessible Ramp Construction',
     'Building safe wheelchair ramps for a community resource center.',
     'Eastside Resource Center',
-    '2026-02-14'
+    CURRENT_DATE + INTERVAL '8 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'BrightFuture Builders'),
     'Community Hall Renovation',
     'Painting and restoring a shared meeting hall for neighborhood programs.',
     'Cedar Grove Community Hall',
-    '2026-03-21'
+    CURRENT_DATE + INTERVAL '15 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'BrightFuture Builders'),
     'Safe Play Space Build',
     'Constructing a durable play area with accessible features for children.',
     'Riverside Elementary School',
-    '2026-04-18'
+    CURRENT_DATE + INTERVAL '22 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'BrightFuture Builders'),
     'Shelter Courtyard Improvements',
     'Improving outdoor gathering space and storage at a family shelter.',
     'Harbor House Shelter',
-    '2026-05-16'
+    CURRENT_DATE + INTERVAL '29 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'GreenHarvest Growers'),
     'Spring Community Garden Launch',
     'Preparing raised beds and planting vegetables for neighborhood families.',
     'Westbrook Community Garden',
-    '2026-02-28'
+    CURRENT_DATE + INTERVAL '36 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'GreenHarvest Growers'),
     'Urban Orchard Planting',
     'Planting fruit trees and teaching residents how to care for young orchards.',
     'Lincoln Avenue Greenway',
-    '2026-03-14'
+    CURRENT_DATE + INTERVAL '43 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'GreenHarvest Growers'),
     'Neighborhood Compost Workshop',
     'Launching a shared compost program and explaining soil health basics.',
     'North Market Pavilion',
-    '2026-04-11'
+    CURRENT_DATE + INTERVAL '50 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'GreenHarvest Growers'),
     'Food Sustainability Fair',
     'Connecting families with local growers, cooking lessons, and food resources.',
     'Downtown Learning Plaza',
-    '2026-05-09'
+    CURRENT_DATE + INTERVAL '57 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'GreenHarvest Growers'),
     'Summer Pollinator Garden',
     'Creating a pollinator habitat with native flowers beside a public library.',
     'Oakview Public Library',
-    '2026-06-13'
+    CURRENT_DATE + INTERVAL '64 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'),
     'Community Food Drive',
     'Collecting and sorting shelf-stable food for local pantry partners.',
     'UnityServe Volunteer Center',
-    '2026-01-24'
+    CURRENT_DATE + INTERVAL '71 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'),
     'Spring Neighborhood Cleanup',
     'Removing litter and restoring public spaces with local volunteers.',
     'Mill Creek Trailhead',
-    '2026-03-28'
+    CURRENT_DATE + INTERVAL '78 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'),
     'Charity Donation Sort',
     'Organizing clothing and household donations for regional charities.',
     'South County Donation Hub',
-    '2026-04-25'
+    CURRENT_DATE + INTERVAL '85 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'),
     'Senior Outreach Visits',
     'Coordinating friendly visits and practical support for isolated seniors.',
     'Pinecrest Senior Community',
-    '2026-05-23'
+    CURRENT_DATE + INTERVAL '92 days'
 ),
 (
     (SELECT organization_id FROM organization WHERE name = 'UnityServe Volunteers'),
     'Backpack Resource Giveaway',
     'Preparing school supplies and resource kits for students before the school year.',
     'Community Youth Center',
-    '2026-08-08'
+    CURRENT_DATE + INTERVAL '99 days'
 );
 
 -- ========================================

@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+
+    <section class="section-block">
+        <div class="container error-layout">
+            <h1>
+                <%= title %>
+            </h1>
+            <p>We encountered a problem while processing your request.</p>
+            <p><a href="/">Return to the homepage</a></p>
+
+            <% if (NODE_ENV==='development' && stack) { %>
+                <div class="error-details">
+                    <h2>Error details</h2>
+                    <p><strong>Error:</strong>
+                        <%= error %>
+                    </p>
+                    <pre><%= stack %></pre>
+                </div>
+                <% } else if (NODE_ENV==='development' ) { %>
+                    <div class="error-details">
+                        <h2>Error details</h2>
+                        <p><strong>Error:</strong>
+                            <%= error %>
+                        </p>
+                    </div>
+                    <% } %>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>

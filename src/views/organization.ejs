@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+    <section class="section-block">
+        <div class="container detail-layout">
+            <article class="detail-card">
+                <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo"
+                    class="detail-logo" />
+                <h1>
+                    <%= organizationDetails.name %>
+                </h1>
+                <p><strong>Contact:</strong>
+                    <%= organizationDetails.contact_email %>
+                </p>
+                <p>
+                    <%= organizationDetails.description %>
+                </p>
+            </article>
+
+            <section class="detail-list-section">
+                <h2>Projects by this organization</h2>
+                <% if (projects && projects.length) { %>
+                    <ul class="detail-list">
+                        <% projects.forEach((project)=> { %>
+                            <li><a href="/project/<%= project.project_id %>">
+                                    <%= project.title %>
+                                </a></li>
+                            <% }); %>
+                    </ul>
+                    <% } else { %>
+                        <p>No projects are currently listed for this organization.</p>
+                        <% } %>
+            </section>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
