@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<section class="section-block"><div class="container form-card">
+  <h1><%= title %></h1>
+  <form action="/new-project" method="post">
+    <label for="title">Project title</label>
+    <input id="title" name="title" type="text" required maxlength="200">
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required maxlength="1000"></textarea>
+    <label for="location">Location</label>
+    <input id="location" name="location" type="text" required maxlength="200">
+    <label for="date">Date</label>
+    <input id="date" name="date" type="date" required>
+    <label for="organizationId">Organization</label>
+    <select id="organizationId" name="organizationId" required>
+      <option value="">Choose an organization</option>
+      <% organizations.forEach((organization) => { %>
+        <option value="<%= organization.organization_id %>"><%= organization.name %></option>
+      <% }); %>
+    </select>
+    <button class="button primary" type="submit">Add Service Project</button>
+  </form>
+</div></section>
+<%- include('partials/footer') %>

@@ -1,10 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
+import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { testConnection } from './src/models/db.js';
 import router from './src/routes.js';
 import { errorHandler, notFoundHandler } from './src/controllers/errors.js';
+import flash from './src/middleware/flash.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -15,6 +17,15 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60 * 60 * 1000 }
+}));
+app.use(flash);
 
 app.use((req, res, next) => {
   if (NODE_ENV === 'development') {

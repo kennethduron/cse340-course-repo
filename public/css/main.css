@@ -418,3 +418,59 @@ select {
     grid-template-columns: 1fr;
   }
 }
+
+.form-card {
+  max-width: 720px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow);
+}
+
+.form-card form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.form-card textarea {
+  min-height: 9rem;
+  resize: vertical;
+}
+
+.form-card .button {
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.flash-stack {
+  padding-top: 1rem;
+}
+
+.alert {
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.alert.success { background: #e8f7ef; border-color: #a7dfbd; color: #176b3a; }
+.alert.error { background: #fdecec; border-color: #efb0b0; color: #962d2d; }
+.alert.warning { background: #fff7df; border-color: #e8cb7b; color: #765812; }
+.alert.info { background: #e7f2fb; border-color: #a9cee9; color: #164e78; }

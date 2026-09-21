@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+<section class="section-block"><div class="container form-card">
+  <h1><%= title %></h1>
+  <p>Assign categories to <strong><%= project.title %></strong>.</p>
+  <% const assignedIds = new Set(assignedCategories.map((category) => category.category_id)); %>
+  <form action="/assign-categories/<%= project.project_id %>" method="post">
+    <% categories.forEach((category) => { %>
+      <label class="checkbox-label"><input type="checkbox" name="categoryIds" value="<%= category.category_id %>" <%= assignedIds.has(category.category_id) ? 'checked' : '' %>> <%= category.name %></label>
+    <% }); %>
+    <button class="button primary" type="submit">Save Categories</button>
+  </form>
+</div></section>
+<%- include('partials/footer') %>
