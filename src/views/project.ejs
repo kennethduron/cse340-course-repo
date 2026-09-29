@@ -19,7 +19,10 @@
                 <p>
                     <%= project.description %>
                 </p>
-                <p><a class="button secondary" href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>
+                <p>
+                    <a class="button secondary" href="/edit-project/<%= project.project_id %>">Edit Project</a>
+                    <a class="button secondary" href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
+                </p>
 
                 <div class="tag-list-wrap">
                     <h2>Categories</h2>

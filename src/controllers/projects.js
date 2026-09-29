@@ -4,7 +4,8 @@ import { getAllOrganizations } from '../models/organizations.js';
 import {
     createProject,
     getProjectDetails,
-    getUpcomingProjects
+    getUpcomingProjects,
+    updateProject
 } from '../models/projects.js';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -75,4 +76,53 @@ const processNewProjectForm = async (req, res, next) => {
     }
 };
 
-export { NUMBER_OF_UPCOMING_PROJECTS, projectValidation, showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNewProjectForm };
+const showEditProjectForm = async (req, res, next) => {
+    try {
+        const project = await getProjectDetails(Number(req.params.id));
+        if (!project) {
+            const error = new Error('Project not found');
+            error.status = 404;
+            return next(error);
+        }
+        const organizations = await getAllOrganizations();
+        const projectDate = new Date(project.date).toISOString().slice(0, 10);
+        res.render('edit-project', {
+            title: `Edit ${project.title}`,
+            project,
+            organizations,
+            projectDate
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const processEditProjectForm = async (req, res, next) => {
+    const projectId = Number(req.params.id);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        errors.array().forEach((error) => req.flash('error', error.msg));
+        return res.redirect(`/edit-project/${projectId}`);
+    }
+    try {
+        const { title, description, location, date, organizationId } = req.body;
+        await updateProject(projectId, title, description, location, date, organizationId);
+        req.flash('success', 'Project updated successfully!');
+        res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        if (error.status === 404) return next(error);
+        req.flash('error', 'There was an error updating the service project.');
+        res.redirect(`/edit-project/${projectId}`);
+    }
+};
+
+export {
+    NUMBER_OF_UPCOMING_PROJECTS,
+    projectValidation,
+    showProjectsPage,
+    showProjectDetailsPage,
+    showNewProjectForm,
+    processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm
+};
