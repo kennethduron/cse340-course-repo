@@ -77,9 +77,17 @@ const getProjectDetails = async (projectId) => {
     return result.rows[0] || null;
 };
 
+const createProject = async (title, description, location, date, organizationId) => {
+    const query = `INSERT INTO project (title, description, location, date, organization_id)
+        VALUES ($1, $2, $3, $4, $5) RETURNING project_id;`;
+    const result = await db.query(query, [title, description, location, date, organizationId]);
+    return result.rows[0].project_id;
+};
+
 export {
     getAllProjects,
     getProjectsByOrganizationId,
     getUpcomingProjects,
-    getProjectDetails
+    getProjectDetails,
+    createProject
 };

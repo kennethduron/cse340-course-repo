@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+<section class="section-block"><div class="container form-card">
+  <h1><%= title %></h1>
+  <form action="/edit-organization/<%= organization.organization_id %>" method="post">
+    <label for="name">Organization name</label>
+    <input id="name" name="name" type="text" value="<%= organization.name %>" required maxlength="150">
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required maxlength="500"><%= organization.description %></textarea>
+    <label for="contactEmail">Contact email</label>
+    <input id="contactEmail" name="contactEmail" type="email" value="<%= organization.contact_email %>" required>
+    <label for="logoFilename">Logo filename</label>
+    <input id="logoFilename" name="logoFilename" type="text" value="<%= organization.logo_filename %>" required>
+    <button class="button primary" type="submit">Update Organization</button>
+  </form>
+</div></section>
+<%- include('partials/footer') %>

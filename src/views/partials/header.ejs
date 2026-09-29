@@ -23,4 +23,14 @@
         </nav>
       </div>
     </header>
+    <% const messages = flash(); %>
+    <% Object.keys(messages).forEach((type) => { %>
+      <% if (messages[type].length) { %>
+        <div class="container flash-stack" aria-live="polite">
+          <% messages[type].forEach((message) => { %>
+            <div class="alert <%= type %>"><%= message %></div>
+          <% }); %>
+        </div>
+      <% } %>
+    <% }); %>
     <main class="page-shell">
