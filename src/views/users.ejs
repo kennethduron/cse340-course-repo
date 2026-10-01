@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+<section class="section-block">
+  <div class="container">
+    <h1><%= title %></h1>
+    <div class="table-scroll">
+      <table class="users-table">
+        <caption>Registered account names, email addresses, and roles</caption>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach((registeredUser) => { %>
+            <tr>
+              <td><%= registeredUser.name %></td>
+              <td class="user-email"><%= registeredUser.email %></td>
+              <td><%= registeredUser.role_name %></td>
+            </tr>
+          <% }); %>
+          <% if (users.length === 0) { %>
+            <tr>
+              <td colspan="3">No registered users.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

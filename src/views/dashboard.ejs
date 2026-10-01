@@ -5,6 +5,9 @@
     <h1>Dashboard</h1>
     <p><strong>Name:</strong> <%= name %></p>
     <p><strong>Username:</strong> <%= email %></p>
+    <% if (user && user.role_name === 'admin') { %>
+      <p><a class="button primary" href="/users">Registered Users</a></p>
+    <% } %>
   </div>
 </section>
 

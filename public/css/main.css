@@ -234,6 +234,42 @@ select {
   box-shadow: var(--shadow);
 }
 
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.users-table caption {
+  padding: 1rem;
+  text-align: left;
+  color: var(--muted);
+}
+
+.users-table th,
+.users-table td {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.users-table th {
+  background: var(--surface-alt);
+  color: var(--primary-dark);
+}
+
+.user-email {
+  overflow-wrap: anywhere;
+}
+
 .org-card img {
   width: 100%;
   height: 120px;
@@ -416,6 +452,12 @@ select {
 
   .category-list {
     grid-template-columns: 1fr;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 0.7rem 0.55rem;
+    font-size: 0.9rem;
   }
 }
 
