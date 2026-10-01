@@ -6,7 +6,10 @@
                 <h1>
                     <%= category.name %>
                 </h1>
-                <p><a class="button secondary" href="/edit-category/<%= category.category_id %>">Edit Category</a></p>
+                <% if (user && user.role_name==='admin' ) { %>
+                    <p><a class="button secondary" href="/edit-category/<%= category.category_id %>">Edit Category</a>
+                    </p>
+                <% } %>
 
                 <% if (projects && projects.length) { %>
                     <ul class="detail-list">

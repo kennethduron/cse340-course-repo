@@ -64,6 +64,20 @@ const requireLogin = (req, res, next) => {
     return next();
 };
 
+const requireRole = (role) => (req, res, next) => {
+    if (!req.session || !req.session.user) {
+        req.flash('error', 'You must be logged in to access this page.');
+        return res.redirect('/login');
+    }
+
+    if (req.session.user.role_name !== role) {
+        req.flash('error', 'You do not have permission to access this page.');
+        return res.redirect('/');
+    }
+
+    return next();
+};
+
 const showDashboard = (req, res) => {
     const { name, email } = req.session.user;
     res.render('dashboard', { title: 'Dashboard', name, email });
@@ -76,5 +90,6 @@ export {
     processLoginForm,
     processLogout,
     requireLogin,
+    requireRole,
     showDashboard
 };
