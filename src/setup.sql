@@ -1,8 +1,37 @@
 -- ========================================
+-- Role Table
+-- ========================================
+
+CREATE TABLE IF NOT EXISTS roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    role_description TEXT
+);
+
+INSERT INTO roles (role_name, role_description)
+VALUES
+    ('user', 'Standard user with basic access'),
+    ('admin', 'Administrator with full system access')
+ON CONFLICT (role_name) DO NOTHING;
+
+-- ========================================
+-- User Table
+-- ========================================
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role_id INTEGER REFERENCES roles(role_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ========================================
 -- Organization Table
 -- ========================================
 
-CREATE TABLE organization (
+CREATE TABLE IF NOT EXISTS organization (
     organization_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
@@ -44,7 +73,7 @@ VALUES
 -- Service Project Table
 -- ========================================
 
-CREATE TABLE project (
+CREATE TABLE IF NOT EXISTS project (
     project_id SERIAL PRIMARY KEY,
     organization_id INTEGER NOT NULL,
     title VARCHAR(200) NOT NULL,
@@ -60,7 +89,7 @@ CREATE TABLE project (
 -- Category Table
 -- ========================================
 
-CREATE TABLE category (
+CREATE TABLE IF NOT EXISTS category (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL UNIQUE
 );
@@ -69,7 +98,7 @@ CREATE TABLE category (
 -- Project Category Junction Table
 -- ========================================
 
-CREATE TABLE project_category (
+CREATE TABLE IF NOT EXISTS project_category (
     project_id INTEGER NOT NULL,
     category_id INTEGER NOT NULL,
     PRIMARY KEY (project_id, category_id),
@@ -93,7 +122,8 @@ VALUES
     ('Environment'),
     ('Education'),
     ('Health and Wellness'),
-    ('Volunteer Service');
+    ('Volunteer Service')
+ON CONFLICT (name) DO NOTHING;
 
 -- ========================================
 -- Service Project Data
@@ -243,4 +273,5 @@ VALUES
 ((SELECT project_id FROM project WHERE title = 'Senior Outreach Visits'), (SELECT category_id FROM category WHERE name = 'Health and Wellness')),
 ((SELECT project_id FROM project WHERE title = 'Senior Outreach Visits'), (SELECT category_id FROM category WHERE name = 'Volunteer Service')),
 ((SELECT project_id FROM project WHERE title = 'Backpack Resource Giveaway'), (SELECT category_id FROM category WHERE name = 'Education')),
-((SELECT project_id FROM project WHERE title = 'Backpack Resource Giveaway'), (SELECT category_id FROM category WHERE name = 'Volunteer Service'));
+((SELECT project_id FROM project WHERE title = 'Backpack Resource Giveaway'), (SELECT category_id FROM category WHERE name = 'Volunteer Service'))
+ON CONFLICT (project_id, category_id) DO NOTHING;

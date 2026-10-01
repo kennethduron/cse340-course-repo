@@ -3,10 +3,17 @@ import { showHomePage, testErrorPage } from './controllers/index.js';
 import { organizationValidation, processEditOrganizationForm, processNewOrganizationForm, showEditOrganizationForm, showNewOrganizationForm, showOrganizationsPage, showOrganizationDetailsPage } from './controllers/organizations.js';
 import { processEditProjectForm, processNewProjectForm, projectValidation, showEditProjectForm, showNewProjectForm, showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
 import { categoryValidation, processAssignCategoriesForm, processEditCategoryForm, processNewCategoryForm, showAssignCategoriesForm, showCategoriesPage, showCategoryDetailsPage, showEditCategoryForm, showNewCategoryForm } from './controllers/categories.js';
+import { processUserRegistrationForm, showUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard } from './controllers/users.js';
 
 const router = express.Router();
 
 router.get('/', showHomePage);
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, showDashboard);
 router.get('/organizations', showOrganizationsPage);
 router.get('/new-organization', showNewOrganizationForm);
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
