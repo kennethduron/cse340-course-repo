@@ -14,7 +14,9 @@
                 <p>
                     <%= organizationDetails.description %>
                 </p>
-                <p><a class="button secondary" href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+                <% if (user && user.role_name==='admin' ) { %>
+                    <p><a class="button secondary" href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+                <% } %>
             </article>
 
             <section class="detail-list-section">
