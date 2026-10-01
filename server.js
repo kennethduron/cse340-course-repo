@@ -28,14 +28,15 @@ app.use(session({
 app.use(flash);
 
 app.use((req, res, next) => {
-  if (NODE_ENV === 'development') {
-    console.log(`${req.method} ${req.url}`);
-  }
+  res.locals.isLoggedIn = Boolean(req.session && req.session.user);
+  res.locals.NODE_ENV = NODE_ENV;
   next();
 });
 
 app.use((req, res, next) => {
-  res.locals.NODE_ENV = NODE_ENV;
+  if (NODE_ENV === 'development') {
+    console.log(`${req.method} ${req.url}`);
+  }
   next();
 });
 
