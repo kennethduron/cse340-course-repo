@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import bcrypt from 'bcrypt';
 import db from './src/models/db.js';
-import { createUser, authenticateUser } from './src/models/users.js';
+import { createUser, authenticateUser, getAllUsers } from './src/models/users.js';
 import { requireRole } from './src/controllers/users.js';
 
 test('auth registration and login flow stores hashes and strips password data', async () => {
@@ -77,6 +77,32 @@ test('requireRole redirects unauthenticated and non-admin users and allows admin
     assert.equal(regularUser.response.redirectTarget, '/');
     assert.equal(regularUser.response.messages[0].message, 'You do not have permission to access this page.');
 
+    const usersPageRegularUser = (() => {
+        const response = {
+            redirectTarget: null,
+            redirect(target) {
+                this.redirectTarget = target;
+                return this;
+            }
+        };
+        const request = {
+            session: { user: { role_name: 'user' } },
+            flash() {}
+        };
+        requireRole('admin', '/dashboard')(request, response, () => {});
+        return response;
+    })();
+    assert.equal(usersPageRegularUser.redirectTarget, '/dashboard');
+
     const adminUser = runGuard({ role_name: 'admin' });
     assert.equal(adminUser.nextCalled, true);
+});
+
+test('getAllUsers returns names, emails, and roles without credential fields', async () => {
+    const users = await getAllUsers();
+
+    assert.ok(users.length > 0);
+    assert.deepEqual(Object.keys(users[0]).sort(), ['email', 'name', 'role_name', 'user_id']);
+    assert.ok(users.every((user) => user.role_name === 'user' || user.role_name === 'admin'));
+    assert.ok(users.every((user) => !('password' in user) && !('password_hash' in user)));
 });

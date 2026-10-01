@@ -3,7 +3,7 @@ import { showHomePage, testErrorPage } from './controllers/index.js';
 import { organizationValidation, processEditOrganizationForm, processNewOrganizationForm, showEditOrganizationForm, showNewOrganizationForm, showOrganizationsPage, showOrganizationDetailsPage } from './controllers/organizations.js';
 import { processEditProjectForm, processNewProjectForm, projectValidation, showEditProjectForm, showNewProjectForm, showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
 import { categoryValidation, processAssignCategoriesForm, processEditCategoryForm, processNewCategoryForm, showAssignCategoriesForm, showCategoriesPage, showCategoryDetailsPage, showEditCategoryForm, showNewCategoryForm } from './controllers/categories.js';
-import { processUserRegistrationForm, showUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, requireRole, showDashboard } from './controllers/users.js';
+import { processUserRegistrationForm, showUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, requireRole, showDashboard, showUsers } from './controllers/users.js';
 
 const router = express.Router();
 
@@ -14,6 +14,7 @@ router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
 router.get('/dashboard', requireLogin, showDashboard);
+router.get('/users', requireRole('admin', '/dashboard'), showUsers);
 router.get('/organizations', showOrganizationsPage);
 router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
 router.post('/new-organization', requireRole('admin'), organizationValidation, processNewOrganizationForm);
