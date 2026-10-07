@@ -84,6 +84,63 @@ const createProject = async (title, description, location, date, organizationId)
     return result.rows[0].project_id;
 };
 
+const addVolunteer = async (userId, projectId) => {
+    const query = `
+        INSERT INTO volunteer (user_id, project_id)
+        VALUES ($1, $2)
+        ON CONFLICT (user_id, project_id) DO NOTHING;
+    `;
+
+    await db.query(query, [userId, projectId]);
+};
+
+const removeVolunteer = async (userId, projectId) => {
+    const query = `
+        DELETE FROM volunteer
+        WHERE user_id = $1
+          AND project_id = $2;
+    `;
+
+    const result = await db.query(query, [userId, projectId]);
+    return result.rowCount;
+};
+
+const getVolunteeredProjects = async (userId) => {
+    const query = `
+        SELECT p.project_id,
+               p.title,
+               p.description,
+               p.location,
+               p.date,
+               p.organization_id,
+               o.name AS organization_name
+        FROM public.volunteer v
+        JOIN public.project p
+            ON p.project_id = v.project_id
+        JOIN public.organization o
+            ON o.organization_id = p.organization_id
+        WHERE v.user_id = $1
+        ORDER BY p.date, p.project_id;
+    `;
+
+    const result = await db.query(query, [userId]);
+    return result.rows;
+};
+
+const isUserVolunteering = async (userId, projectId) => {
+    const query = `
+        SELECT EXISTS (
+            SELECT 1
+            FROM public.volunteer
+            WHERE user_id = $1
+              AND project_id = $2
+        ) AS is_volunteering;
+    `;
+
+    const result = await db.query(query, [userId, projectId]);
+    return Boolean(result.rows[0]?.is_volunteering);
+};
+
 const updateProject = async (projectId, title, description, location, date, organizationId) => {
     const query = `UPDATE project
         SET title = $1,
@@ -108,5 +165,9 @@ export {
     getUpcomingProjects,
     getProjectDetails,
     createProject,
+    addVolunteer,
+    removeVolunteer,
+    getVolunteeredProjects,
+    isUserVolunteering,
     updateProject
 };

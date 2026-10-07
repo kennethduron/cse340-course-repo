@@ -5,9 +5,31 @@
     <h1>Dashboard</h1>
     <p><strong>Name:</strong> <%= name %></p>
     <p><strong>Username:</strong> <%= email %></p>
+    <p><a class="button primary" href="/volunteering">Volunteering</a></p>
     <% if (user && user.role_name === 'admin') { %>
       <p><a class="button primary" href="/users">Registered Users</a></p>
     <% } %>
+
+    <div class="panel">
+      <h2>My Volunteer Projects</h2>
+      <% if (volunteeringProjects && volunteeringProjects.length) { %>
+        <ul class="stacked-list">
+          <% volunteeringProjects.forEach((project) => { %>
+            <li class="project-summary-row">
+              <div>
+                <p><strong><a href="/project/<%= project.project_id %>"><%= project.title %></a></strong></p>
+                <p><%= project.location %> · <%= new Date(project.date).toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+              </div>
+              <form action="/project/<%= project.project_id %>/unvolunteer" method="POST">
+                <button class="button secondary" type="submit">Remove Volunteering</button>
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>You have not volunteered for any projects yet.</p>
+      <% } %>
+    </div>
   </div>
 </section>
 

@@ -1,9 +1,9 @@
 import express from 'express';
 import { showHomePage, testErrorPage } from './controllers/index.js';
 import { organizationValidation, processEditOrganizationForm, processNewOrganizationForm, showEditOrganizationForm, showNewOrganizationForm, showOrganizationsPage, showOrganizationDetailsPage } from './controllers/organizations.js';
-import { processEditProjectForm, processNewProjectForm, projectValidation, showEditProjectForm, showNewProjectForm, showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
+import { handleRemoveVolunteer, handleVolunteerProject, processEditProjectForm, processNewProjectForm, projectValidation, showEditProjectForm, showNewProjectForm, showProjectsPage, showProjectDetailsPage } from './controllers/projects.js';
 import { categoryValidation, processAssignCategoriesForm, processEditCategoryForm, processNewCategoryForm, showAssignCategoriesForm, showCategoriesPage, showCategoryDetailsPage, showEditCategoryForm, showNewCategoryForm } from './controllers/categories.js';
-import { processUserRegistrationForm, showUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, requireRole, showDashboard, showUsers } from './controllers/users.js';
+import { processUserRegistrationForm, showUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, requireRole, showDashboard, showUsers, showVolunteeringPage } from './controllers/users.js';
 
 const router = express.Router();
 
@@ -14,6 +14,9 @@ router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
 router.get('/dashboard', requireLogin, showDashboard);
+router.get('/volunteering', requireLogin, showVolunteeringPage);
+router.post('/project/:projectId/volunteer', requireLogin, handleVolunteerProject);
+router.post('/project/:projectId/unvolunteer', requireLogin, handleRemoveVolunteer);
 router.get('/users', requireRole('admin', '/dashboard'), showUsers);
 router.get('/organizations', showOrganizationsPage);
 router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);

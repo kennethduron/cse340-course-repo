@@ -2,9 +2,12 @@ import { getCategoriesByProjectId } from '../models/categories.js';
 import { body, validationResult } from 'express-validator';
 import { getAllOrganizations } from '../models/organizations.js';
 import {
+    addVolunteer,
     createProject,
     getProjectDetails,
     getUpcomingProjects,
+    isUserVolunteering,
+    removeVolunteer,
     updateProject
 } from '../models/projects.js';
 
@@ -40,11 +43,73 @@ const showProjectDetailsPage = async (req, res, next) => {
         }
 
         const categories = await getCategoriesByProjectId(projectId);
+        const userId = req.session?.user?.user_id;
+        const isUserVolunteeringThisProject = userId ? await isUserVolunteering(userId, projectId) : false;
+
         res.render('project', {
             title: project.title,
             project,
-            categories
+            categories,
+            isUserVolunteering: isUserVolunteeringThisProject
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const handleVolunteerProject = async (req, res, next) => {
+    try {
+        const projectId = Number(req.params.projectId ?? req.params.id);
+
+        if (!Number.isInteger(projectId) || projectId <= 0) {
+            req.flash('error', 'A valid project is required.');
+            return res.redirect('/projects');
+        }
+
+        const project = await getProjectDetails(projectId);
+        if (!project) {
+            req.flash('error', 'Project not found.');
+            return res.redirect('/projects');
+        }
+
+        const userId = req.session?.user?.user_id;
+        if (!userId) {
+            req.flash('error', 'You must be logged in to volunteer.');
+            return res.redirect('/login');
+        }
+
+        await addVolunteer(userId, projectId);
+        req.flash('success', 'You are now volunteering for this project.');
+        return res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const handleRemoveVolunteer = async (req, res, next) => {
+    try {
+        const projectId = Number(req.params.projectId ?? req.params.id);
+
+        if (!Number.isInteger(projectId) || projectId <= 0) {
+            req.flash('error', 'A valid project is required.');
+            return res.redirect('/projects');
+        }
+
+        const project = await getProjectDetails(projectId);
+        if (!project) {
+            req.flash('error', 'Project not found.');
+            return res.redirect('/projects');
+        }
+
+        const userId = req.session?.user?.user_id;
+        if (!userId) {
+            req.flash('error', 'You must be logged in to remove volunteering.');
+            return res.redirect('/login');
+        }
+
+        await removeVolunteer(userId, projectId);
+        req.flash('success', 'You have removed your volunteering for this project.');
+        return res.redirect(`/project/${projectId}`);
     } catch (error) {
         next(error);
     }
@@ -121,6 +186,8 @@ export {
     projectValidation,
     showProjectsPage,
     showProjectDetailsPage,
+    handleVolunteerProject,
+    handleRemoveVolunteer,
     showNewProjectForm,
     processNewProjectForm,
     showEditProjectForm,

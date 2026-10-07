@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<section class="section-block">
+  <div class="container">
+    <h1>My Volunteering</h1>
+
+    <% if (volunteeringProjects && volunteeringProjects.length) { %>
+      <ul class="stacked-list">
+        <% volunteeringProjects.forEach((project) => { %>
+          <li class="project-summary-row">
+            <div>
+              <p><strong><a href="/project/<%= project.project_id %>"><%= project.title %></a></strong></p>
+              <p><%= project.organization_name %></p>
+              <p><%= project.location %> · <%= new Date(project.date).toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+            </div>
+            <form action="/project/<%= project.project_id %>/unvolunteer" method="POST">
+              <button class="button secondary" type="submit">Remove Volunteering</button>
+            </form>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>You have not volunteered for any projects yet.</p>
+      <p><a class="button primary" href="/projects">Browse Service Projects</a></p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

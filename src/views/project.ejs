@@ -19,6 +19,19 @@
                 <p>
                     <%= project.description %>
                 </p>
+
+                <% if (user) { %>
+                    <% if (isUserVolunteering) { %>
+                        <form action="/project/<%= project.project_id %>/unvolunteer" method="POST">
+                            <button class="button alert" type="submit">Remove Volunteering</button>
+                        </form>
+                    <% } else { %>
+                        <form action="/project/<%= project.project_id %>/volunteer" method="POST">
+                            <button class="button primary" type="submit">Volunteer</button>
+                        </form>
+                    <% } %>
+                <% } %>
+
                 <% if (user && user.role_name==='admin' ) { %>
                     <p>
                         <a class="button secondary" href="/edit-project/<%= project.project_id %>">Edit Project</a>

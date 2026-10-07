@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import bcrypt from 'bcrypt';
 import db from './src/models/db.js';
+import { addVolunteer, getVolunteeredProjects, isUserVolunteering, removeVolunteer } from './src/models/projects.js';
 import { createUser, authenticateUser, getAllUsers } from './src/models/users.js';
 import { requireRole } from './src/controllers/users.js';
 
@@ -96,6 +97,33 @@ test('requireRole redirects unauthenticated and non-admin users and allows admin
 
     const adminUser = runGuard({ role_name: 'admin' });
     assert.equal(adminUser.nextCalled, true);
+});
+
+test('volunteering model adds, checks, lists, and removes project signups', async () => {
+    const projectId = (await db.query('SELECT project_id FROM project ORDER BY project_id LIMIT 1')).rows[0].project_id;
+    const uniqueEmail = `volunteer_${Date.now()}_${Math.floor(Math.random() * 100000)}@example.com`;
+    const passwordHash = await bcrypt.hash('Password123', 10);
+    const userId = await createUser('Volunteer Test User', uniqueEmail, passwordHash);
+
+    try {
+        await addVolunteer(userId, projectId);
+        const isVolunteering = await isUserVolunteering(userId, projectId);
+        assert.equal(isVolunteering, true);
+
+        const volunteeredProjects = await getVolunteeredProjects(userId);
+        assert.ok(volunteeredProjects.some((project) => Number(project.project_id) === Number(projectId)));
+
+        await addVolunteer(userId, projectId);
+        assert.equal(await isUserVolunteering(userId, projectId), true);
+
+        const removedCount = await removeVolunteer(userId, projectId);
+        assert.equal(removedCount, 1);
+        assert.equal(await isUserVolunteering(userId, projectId), false);
+        assert.ok(!(await getVolunteeredProjects(userId)).some((project) => Number(project.project_id) === Number(projectId)));
+    } finally {
+        await removeVolunteer(userId, projectId);
+        await db.query('DELETE FROM users WHERE user_id = $1', [userId]);
+    }
 });
 
 test('getAllUsers returns names, emails, and roles without credential fields', async () => {
